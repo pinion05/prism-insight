@@ -42,3 +42,6 @@ trading/config/kis_*.yaml
 examples/dashboard/build/
 examples/dashboard/dist/
 examples/dashboard/node_modules/
+
+#pakgaes
+venv/

@@ -34,6 +34,7 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 TRADING_DIR = PROJECT_ROOT / "trading"
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(TRADING_DIR))
+from model_config import MODEL_CONFIG
 
 # 설정파일 로딩
 CONFIG_FILE = TRADING_DIR / "config" / "kis_devlp.yaml"
@@ -77,7 +78,7 @@ class DashboardDataGenerator:
         # 번역기 초기화
         if self.enable_translation:
             try:
-                self.translator = DashboardTranslator(model="gpt-5-nano")
+                self.translator = DashboardTranslator(model=MODEL_CONFIG.translation)
                 logger.info("번역 기능이 활성화되었습니다.")
             except Exception as e:
                 self.enable_translation = False

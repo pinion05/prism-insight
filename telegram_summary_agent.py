@@ -14,6 +14,7 @@ from mcp_agent.workflows.evaluator_optimizer.evaluator_optimizer import (
     EvaluatorOptimizerLLM,
     QualityRating,
 )
+from model_config import MODEL_CONFIG
 
 # 로깅 설정
 logging.basicConfig(
@@ -232,7 +233,7 @@ class TelegramSummaryGenerator:
         response = await evaluator_optimizer.generate_str(
             message=prompt_message,
             request_params=RequestParams(
-                model="gpt-4.1",
+                model=MODEL_CONFIG.telegram_summary,
                 maxTokens=6000,
                 max_iterations=2
             )

@@ -44,6 +44,7 @@ from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
 
 # Core agent imports
 from cores.agents.trading_agents import create_trading_scenario_agent
+from model_config import MODEL_CONFIG
 
 # Create MCPApp instance
 app = MCPApp(name="stock_tracking")
@@ -493,7 +494,7 @@ class StockTrackingAgent:
             response = await llm.generate_str(
                 message=prompt_message,
                 request_params=RequestParams(
-                    model="gpt-5",
+                    model=MODEL_CONFIG.trading_scenario,
                     maxTokens=10000
                 )
             )
@@ -1449,7 +1450,10 @@ class StockTrackingAgent:
                     translated_queue = []
                     for idx, message in enumerate(self.message_queue, 1):
                         logger.info(f"Translating message {idx}/{len(self.message_queue)}")
-                        translated = await translate_telegram_message(message, model="gpt-5-nano")
+                        translated = await translate_telegram_message(
+                            message,
+                            model=MODEL_CONFIG.translation
+                        )
                         translated_queue.append(translated)
                     self.message_queue = translated_queue
                     logger.info("All messages translated successfully")
@@ -1546,7 +1550,7 @@ class StockTrackingAgent:
                             logger.info(f"Translating tracking message to {lang}")
                             translated_message = await translate_telegram_message(
                                 message,
-                                model="gpt-5-nano",
+                                model=MODEL_CONFIG.translation,
                                 from_lang="ko",
                                 to_lang=lang
                             )

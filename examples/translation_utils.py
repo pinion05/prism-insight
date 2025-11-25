@@ -6,11 +6,18 @@ AI 기반 대시보드 데이터 번역 유틸리티
 import asyncio
 import json
 import logging
+import sys
+from pathlib import Path
 from typing import Dict, Any, List
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
 from mcp_agent.agents.agent import Agent
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
+from model_config import MODEL_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +25,12 @@ logger = logging.getLogger(__name__)
 class DashboardTranslator:
     """대시보드 데이터 번역 클래스"""
     
-    def __init__(self, model: str = "gpt-5-nano"):
+    def __init__(self, model: str = MODEL_CONFIG.translation):
         """
         번역기 초기화
         
         Args:
-            model: 사용할 OpenAI 모델 (기본: gpt-5-nano)
+            model: 사용할 OpenAI 모델 (기본: model_config.py의 translation 설정)
         """
         self.model = model
         
@@ -444,7 +451,7 @@ if __name__ == "__main__":
     import os
     
     async def test():
-        translator = DashboardTranslator(model="gpt-5-nano")
+        translator = DashboardTranslator(model=MODEL_CONFIG.translation)
         
         # 단일 번역 테스트
         result = await translator.translate_text("자동차 산업의 전망이 밝습니다.")

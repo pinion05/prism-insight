@@ -17,6 +17,7 @@ from mcp_agent.agents.agent import Agent
 from mcp_agent.app import MCPApp
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 from mcp_agent.workflows.llm.augmented_llm_anthropic import AnthropicAugmentedLLM
+from model_config import MODEL_CONFIG
 
 # 로거 설정
 logger = logging.getLogger(__name__)
@@ -419,7 +420,7 @@ async def generate_follow_up_response(ticker, ticker_name, conversation_context,
                     필요한 경우 최신 데이터를 조회하여 정확한 정보를 제공하세요.
                     """,
             request_params=RequestParams(
-                model="claude-sonnet-4-5-20250929",
+                model=MODEL_CONFIG.anthropic_report,
                 maxTokens=2000
             )
         )
@@ -602,7 +603,7 @@ async def generate_evaluation_response(ticker, ticker_name, avg_price, period, t
                     {report_content if report_content else "관련 보고서가 없습니다. 시장 데이터 조회와 perplexity 검색을 통해 최신 정보를 수집하여 평가해주세요."}
                     """,
             request_params=RequestParams(
-                model="claude-sonnet-4-5-20250929",
+                model=MODEL_CONFIG.anthropic_report,
                 maxTokens=3000
             )
         )
@@ -623,4 +624,3 @@ async def generate_evaluation_response(ticker, ticker_name, avg_price, period, t
             logger.error(f"MCPApp 재시작 실패: {reset_error}")
         
         return "죄송합니다. 평가 중 오류가 발생했습니다. 다시 시도해주세요."
-

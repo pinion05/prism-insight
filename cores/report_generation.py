@@ -2,6 +2,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
 from mcp_agent.agents.agent import Agent
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
+from model_config import MODEL_CONFIG
 
 
 # Language name mapping for report generation
@@ -79,7 +80,7 @@ async def generate_report(agent, section, company_name, company_code, reference_
     report = await llm.generate_str(
         message=message,
         request_params=RequestParams(
-            model="gpt-4.1",
+            model=MODEL_CONFIG.report_generation,
             maxTokens=16000,
             max_iterations=6,
             parallel_tool_calls=True,
@@ -145,7 +146,7 @@ async def generate_market_report(agent, section, reference_date, logger, languag
     report = await llm.generate_str(
         message=message,
         request_params=RequestParams(
-            model="gpt-4.1",
+            model=MODEL_CONFIG.report_generation,
             maxTokens=16000,
             max_iterations=3,
             parallel_tool_calls=True,
@@ -254,7 +255,7 @@ Comprehensive Analysis Report:
         executive_summary = await llm.generate_str(
             message=message,
             request_params=RequestParams(
-                model="gpt-4.1",
+                model=MODEL_CONFIG.summary,
                 maxTokens=6000,
                 max_iterations=2,
                 parallel_tool_calls=True,
@@ -471,7 +472,7 @@ Please present a consistent and executable investment strategy that investors ca
         investment_strategy = await llm.generate_str(
             message=message,
             request_params=RequestParams(
-                model="gpt-4.1",
+                model=MODEL_CONFIG.investment_strategy,
                 maxTokens=16000,
                 max_iterations=3,
                 parallel_tool_calls=True,

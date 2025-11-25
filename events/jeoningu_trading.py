@@ -30,6 +30,7 @@ from mcp_agent.agents.agent import Agent
 from mcp_agent.app import MCPApp
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
+from model_config import MODEL_CONFIG
 
 # Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -225,7 +226,7 @@ class JeoninguTrading:
                 
                 with open(audio_file, "rb") as f:
                     result = self.openai_client.audio.transcriptions.create(
-                        model="whisper-1",
+                        model=MODEL_CONFIG.transcription,
                         file=f,
                         language="ko",
                         timeout=600.0  # 10분 타임아웃 (긴 오디오 대비)
@@ -275,7 +276,7 @@ class JeoninguTrading:
                 try:
                     with open(chunk_file, "rb") as f:
                         result = self.openai_client.audio.transcriptions.create(
-                            model="whisper-1",
+                            model=MODEL_CONFIG.transcription,
                             file=f,
                             language="ko"
                         )
@@ -400,7 +401,7 @@ class JeoninguTrading:
                 result = await llm.generate_str(
                     message="위 지시사항에 따라 영상을 분석하고 역발상 투자 전략을 JSON 형식으로 출력해주세요.",
                     request_params=RequestParams(
-                        model="gpt-5",
+                        model=MODEL_CONFIG.trading_scenario,
                         maxTokens=8000,
                         max_iterations=3,
                         parallel_tool_calls=False,

@@ -13,6 +13,7 @@ from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
 
 # Import core agents
 from cores.agents.trading_agents import create_sell_decision_agent
+from model_config import MODEL_CONFIG
 
 logging.basicConfig(
     level=logging.INFO,
@@ -734,7 +735,7 @@ class EnhancedStockTrackingAgent(StockTrackingAgent):
             response = await llm.generate_str(
                 message=prompt_message,
                 request_params=RequestParams(
-                    model="gpt-5",
+                    model=MODEL_CONFIG.sell_decision,
                     maxTokens=6000
                 )
             )

@@ -14,6 +14,7 @@ import yaml
 from pathlib import Path
 from typing import Dict, Any, List
 from dotenv import load_dotenv
+from model_config import MODEL_CONFIG
 
 # Set paths based on current script directory
 SCRIPT_DIR = Path(__file__).parent
@@ -272,7 +273,7 @@ class PortfolioTelegramReporter:
                     # Translate message
                     translated_message = await translate_telegram_message(
                         original_message,
-                        model="gpt-5-nano",
+                        model=MODEL_CONFIG.translation,
                         from_lang="ko",
                         to_lang=lang
                     )

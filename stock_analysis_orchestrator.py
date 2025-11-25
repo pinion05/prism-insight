@@ -18,6 +18,7 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
+from model_config import MODEL_CONFIG
 
 # Logger configuration
 logging.basicConfig(
@@ -402,7 +403,7 @@ class StockAnalysisOrchestrator:
                             logger.info(f"Translating telegram message from {message_path} to {lang}")
                             translated_message = await translate_telegram_message(
                                 original_message,
-                                model="gpt-5-nano",
+                                model=MODEL_CONFIG.translation,
                                 from_lang="ko",
                                 to_lang=lang
                             )
@@ -463,7 +464,7 @@ class StockAnalysisOrchestrator:
                             # Translate the report (without images)
                             translated_report = await translate_telegram_message(
                                 text_for_translation,
-                                model="gpt-5-nano",
+                                model=MODEL_CONFIG.translation,
                                 from_lang="ko",
                                 to_lang=lang
                             )
@@ -553,7 +554,7 @@ class StockAnalysisOrchestrator:
                 try:
                     logger.info("Translating trigger alert message to English")
                     from cores.agents.telegram_translator_agent import translate_telegram_message
-                    message = await translate_telegram_message(message, model="gpt-5-nano")
+                    message = await translate_telegram_message(message, model=MODEL_CONFIG.translation)
                     logger.info("Translation complete")
                 except Exception as e:
                     logger.error(f"Translation failed: {str(e)}. Using original Korean message.")
@@ -617,7 +618,7 @@ class StockAnalysisOrchestrator:
                     # Translate message
                     translated_message = await translate_telegram_message(
                         original_message,
-                        model="gpt-5-nano",
+                        model=MODEL_CONFIG.translation,
                         from_lang="ko",
                         to_lang=lang
                     )
